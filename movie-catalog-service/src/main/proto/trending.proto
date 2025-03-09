@@ -6,13 +6,17 @@ option java_multiple_files = true;
 option java_package = "com.example.grpc";
 option java_outer_classname = "TrendingProto";
 
-service TrendingService {
+service TrendingMoviesService {
   rpc GetTrendingMovies (TrendingRequest) returns (TrendingResponse) {
   }
+}
 
+service TopMoviesService {
   rpc GetTopMovieIds (TrendingRequest) returns (MovieIds) {
   }
+}
 
+service MoviesInfoService {
   rpc GetMoviesInfo (MovieIds) returns (TrendingResponse) {
   }
 }
@@ -20,7 +24,7 @@ service TrendingService {
 message Movie {
   string name = 1;
   string description = 2;
-  float rating = 3;
+  int32 movieId = 3;
 }
 
 message MovieIds {
