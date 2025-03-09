@@ -1,7 +1,12 @@
 package com.example.movieinfoservice.models;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Movie {
 
+    @Id
     private String movieId;
     private String name;
     private String description;
