@@ -1,16 +1,22 @@
 package com.example.trendingservice.resources;
 
-import com.example.trendingservice.models.Rating;
-import com.example.trendingservice.models.UserRating;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.grpc.HelloReply;
+import com.example.grpc.HelloRequest;
+import com.example.grpc.MyServiceGrpc;
+import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.server.service.GrpcService;
 
-import java.util.Arrays;
-import java.util.List;
+@GrpcService
+public class TrendingResource extends MyServiceGrpc.MyServiceImplBase {
 
-@RestController
-@RequestMapping("/trending")
-public class TrendingResource {
+    @Override
+    public void sayHello(HelloRequest request, StreamObserver<HelloReply> responseObserver) {
+        HelloReply reply = HelloReply.newBuilder()
+                .setMessage("Hello: " + request.getName())
+                .build();
+
+        responseObserver.onNext(reply);
+        responseObserver.onCompleted();
+    }
 
 }
