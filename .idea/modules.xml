@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/microservices-spring-boot.iml" filepath="$PROJECT_DIR$/.idea/microservices-spring-boot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ratings-data-service/ratings-service.iml" filepath="$PROJECT_DIR$/ratings-data-service/ratings-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trending-movies-service/trending-service.iml" filepath="$PROJECT_DIR$/trending-movies-service/trending-service.iml" />
+    </modules>
+  </component>
+</project>
