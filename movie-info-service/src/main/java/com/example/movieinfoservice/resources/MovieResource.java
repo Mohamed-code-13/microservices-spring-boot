@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/movies")
 public class MovieResource {
@@ -26,17 +28,28 @@ public class MovieResource {
 
     @RequestMapping("/{movieId}")
     public Movie getMovieInfo(@PathVariable("movieId") String movieId) {
+        // ------------------- Cache implementation -------------------
         // Check MongoDB first for a cached result
-        return cache.findById(movieId).orElseGet(() -> {
-            System.out.println("fetching result from TMDB ID = " + movieId);
+        return getCachedMovie(movieId).orElseGet(() -> {
             // If result is not present in cache, get the movie info from TMDB
-            final String url = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + apiKey;
-            MovieSummary movieSummary = restTemplate.getForObject(url, MovieSummary.class);
+            Movie movie = getRemoteMovie(movieId);
             // Cache the result
-            Movie movie = new Movie(movieId, movieSummary.getTitle(), movieSummary.getOverview());
             cache.insert(movie);
             return movie;
         });
+        // ----------------- No-cache implementation -----------------
+//        return getRemoteMovie(movieId);
+    }
+
+    private Optional<Movie> getCachedMovie(String movieId) {
+        return cache.findById(movieId);
+    }
+
+    private Movie getRemoteMovie(String movieId) {
+        // Get the movie info from TMDB
+        final String url = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + apiKey;
+        MovieSummary movieSummary = restTemplate.getForObject(url, MovieSummary.class);
+        return new Movie(movieId, movieSummary.getTitle(), movieSummary.getOverview());
     }
 }
 
