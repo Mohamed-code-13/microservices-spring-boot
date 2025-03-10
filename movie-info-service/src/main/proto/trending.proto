@@ -26,7 +26,7 @@ service MoviesInfoService {
 message Movie {
   string name = 1;
   string description = 2;
-  int32 movieId = 3;
+  string movieId = 3;
 }
 
 message MovieIds {
