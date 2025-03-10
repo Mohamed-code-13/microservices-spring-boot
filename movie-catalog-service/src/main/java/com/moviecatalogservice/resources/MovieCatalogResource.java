@@ -55,6 +55,11 @@ public class MovieCatalogResource {
         return ratings.stream().map(movieInfoService::getCatalogItem).collect(Collectors.toList());
     }
 
+    @RequestMapping("/movie/{movieId}")
+    public CatalogItem getMovieInfo(@PathVariable String movieId) {
+        return this.movieInfoService.getCatalogItem(new Rating(movieId, 0));
+    }
+
     @GetMapping("/trending")
     public List<Movie> getTrending() {
         return this.trendingMovieService.GetTrendingMovies();
