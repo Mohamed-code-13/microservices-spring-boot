@@ -15,5 +15,5 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
             "ORDER BY AVG(rating) DESC " +
             "LIMIT 10",
             nativeQuery = true)
-    List<Integer> getTopMovieIds();
+    List<String> getTopMovieIds();
 }

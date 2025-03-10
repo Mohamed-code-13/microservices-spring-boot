@@ -3,7 +3,7 @@ package com.example.ratingsservice.service;
 
 import com.example.grpc.MovieIds;
 import com.example.grpc.TopMoviesServiceGrpc;
-import com.example.grpc.TrendingRequest;
+import com.google.protobuf.Empty;
 import com.example.ratingsservice.repositories.RatingRepository;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -21,8 +21,8 @@ public class TopMoviesService extends TopMoviesServiceGrpc.TopMoviesServiceImplB
     }
 
     @Override
-    public void getTopMovieIds(TrendingRequest request, StreamObserver<MovieIds> responseObserver) {
-        List<Integer> ratingList = ratingRepository.getTopMovieIds();
+    public void getTopMovieIds(Empty request, StreamObserver<MovieIds> responseObserver) {
+        List<String> ratingList = ratingRepository.getTopMovieIds();
         MovieIds topMovies = MovieIds.newBuilder()
                 .addAllId(ratingList)
                 .build();

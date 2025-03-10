@@ -4,8 +4,7 @@ import com.example.grpc.*;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import net.devh.boot.grpc.server.service.GrpcService;
-
-import java.util.List;
+import com.google.protobuf.Empty;
 
 @GrpcService
 public class TrendingResource extends TrendingMoviesServiceGrpc.TrendingMoviesServiceImplBase {
@@ -13,17 +12,19 @@ public class TrendingResource extends TrendingMoviesServiceGrpc.TrendingMoviesSe
     @GrpcClient("rating-data-service")
     private TopMoviesServiceGrpc.TopMoviesServiceBlockingStub trendingServiceStub;
 
+    @GrpcClient("movie-info-service")
+    private MoviesInfoServiceGrpc.MoviesInfoServiceBlockingStub moviesInfoServiceStub;
+
     @Override
-    public void getTrendingMovies(TrendingRequest request, StreamObserver<TrendingResponse> responseObserver) {
-        TrendingRequest trendingRequest = TrendingRequest.newBuilder().build();
+    public void getTrendingMovies(Empty request, StreamObserver<TrendingResponse> responseObserver) {
+        Empty trendingRequest = Empty.getDefaultInstance();
 
         MovieIds movieIds = trendingServiceStub.getTopMovieIds(trendingRequest);
 
+        TrendingResponse response = moviesInfoServiceStub.getMoviesInfo(movieIds);
 
-        System.out.println("Top Ids");
-        for (int id : movieIds.getIdList())
-            System.out.println(id);
-
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 
 }
