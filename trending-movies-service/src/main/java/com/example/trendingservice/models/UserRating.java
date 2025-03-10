@@ -1,4 +1,4 @@
-package com.example.ratingsservice.models;
+package com.example.trendingservice.models;
 
 import java.util.List;
 

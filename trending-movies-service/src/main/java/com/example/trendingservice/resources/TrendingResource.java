@@ -1,16 +1,30 @@
 package com.example.trendingservice.resources;
 
-import com.example.trendingservice.models.Rating;
-import com.example.trendingservice.models.UserRating;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.grpc.*;
+import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.client.inject.GrpcClient;
+import net.devh.boot.grpc.server.service.GrpcService;
+import com.google.protobuf.Empty;
 
-import java.util.Arrays;
-import java.util.List;
+@GrpcService
+public class TrendingResource extends TrendingMoviesServiceGrpc.TrendingMoviesServiceImplBase {
 
-@RestController
-@RequestMapping("/trending")
-public class TrendingResource {
+    @GrpcClient("rating-data-service")
+    private TopMoviesServiceGrpc.TopMoviesServiceBlockingStub trendingServiceStub;
+
+    @GrpcClient("movie-info-service")
+    private MoviesInfoServiceGrpc.MoviesInfoServiceBlockingStub moviesInfoServiceStub;
+
+    @Override
+    public void getTrendingMovies(Empty request, StreamObserver<TrendingResponse> responseObserver) {
+        Empty trendingRequest = Empty.getDefaultInstance();
+
+        MovieIds movieIds = trendingServiceStub.getTopMovieIds(trendingRequest);
+
+        TrendingResponse response = moviesInfoServiceStub.getMoviesInfo(movieIds);
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 
 }

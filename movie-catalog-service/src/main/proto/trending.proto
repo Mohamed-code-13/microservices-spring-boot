@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package com.example.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.example.grpc";
+option java_outer_classname = "TrendingProto";
+
+import "google/protobuf/empty.proto";
+
+service TrendingMoviesService {
+  rpc GetTrendingMovies (google.protobuf.Empty) returns (TrendingResponse) {
+  }
+}
+
+service TopMoviesService {
+  rpc GetTopMovieIds (google.protobuf.Empty) returns (MovieIds) {
+  }
+}
+
+service MoviesInfoService {
+  rpc GetMoviesInfo (MovieIds) returns (TrendingResponse) {
+  }
+}
+
+message Movie {
+  string name = 1;
+  string description = 2;
+  string movieId = 3;
+}
+
+message MovieIds {
+  repeated string id = 1;
+}
+
+message TrendingResponse {
+  repeated Movie movies = 1;
+}

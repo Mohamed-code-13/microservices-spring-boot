@@ -1,4 +1,4 @@
-package com.example.ratingsservice.models;
+package com.example.trendingservice.models;
 
 public class Rating {
 
